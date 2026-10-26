@@ -1,53 +1,88 @@
 ﻿Level level = BuildLevel();
 
-string currentLevelId = level.StartRoomId;
+string currentRoomId = level.StartRoomId;
+var inventory = new List<string>();
 while (true)
 {
-    Room room = level.Rooms.First(r => r.Id == currentLevelId);
+    Room room = level.Rooms.First(r => r.Id == currentRoomId);
     Console.Clear();
     Console.WriteLine($"--{room.Name}--");
     Console.WriteLine(room.Description);
     Console.WriteLine();
 
-    for(int i = 0; i< room.Choices.Count; i++)
+    if (room.IsExit)
     {
-        Console.WriteLine($"{i+1}. {room.Choices[i].Text}");
+        Console.WriteLine("\n You escaped! Congrats!");
+        Console.ReadKey();
+        break;
     }
+
+    var visibleChoices = room.Choices.Where(c => c.GivesItemId == null || !inventory.Contains(c.GivesItemId)).ToList();
+
+    for (int i = 0; i < visibleChoices.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {visibleChoices[i].Text}");
+    }
+
     Console.WriteLine("q. Quit");
     Console.Write("> ");
     string? input = Console.ReadLine();
 
     if (input == "q") break;
 
-    if (int.TryParse(input, out int number) && number >= 1 && number <= room.Choices.Count)
+    if (int.TryParse(input, out int number) && number >= 1 && number <= visibleChoices.Count)
     {
-        Choice choice = room.Choices[number - 1];
+        Choice choice = visibleChoices[number - 1];
 
-        if (choice.TargetRoomId != null)
+        if (choice.RequiredItemId != null && !inventory.Contains(choice.RequiredItemId))
         {
-            currentLevelId = choice.TargetRoomId;
+            Console.WriteLine(choice.LockedMessage ?? "You can't do that yet.");
+            Console.ReadKey();
+        }
+        else
+        {
+            if (choice.GivesItemId != null)
+            {
+                inventory.Add(choice.GivesItemId);
+                Console.WriteLine($"You got {choice.GivesItemName}");
+                Console.ReadKey();
+            }
+            if (choice.TargetRoomId != null)
+            {
+                currentRoomId = choice.TargetRoomId;
+            }
         }
     }
 }
+
 static Level BuildLevel()
 {
-    var celar = new Room()
+    var cellar = new Room()
     {
-        Id = "celar",
-        Name = "Celar",
-        Description = "A dark celar. Two paths: \n-one leads to a even darker corridor, \n-one leads to a boiler room."
+        Id = "cellar",
+        Name = "Cellar",
+        Description = "A dark cellar. Two paths: \n-one leads to a even darker corridor, \n-one leads to a boiler room."
     };
-    celar.Choices.AddRange(new List<Choice>{
+    cellar.Choices.AddRange(new List<Choice>{
         new Choice
         {
             Text = "Go down the corridor",
-            TargetRoomId = "corridor"
+            TargetRoomId = "corridor",
+            RequiredItemId = "flashlight",
+            LockedMessage = "It's too dark to see anything without a light source."
         },
         new Choice
         {
             Text = "Go to the boiler room",
             TargetRoomId = "boilerroom"
+        },
+        new Choice
+        {
+            Text = "Take flashlight",
+            GivesItemId = "flashlight",
+            GivesItemName = "A flashlight"
         }
+        
     });
     var corridor = new Room()
     {
@@ -55,10 +90,18 @@ static Level BuildLevel()
         Name = "Corridor",
         Description = "It's to dark to see anything."
     };
-    corridor.Choices.Add(new Choice
+    corridor.Choices.AddRange(new List<Choice>
     {
-        Text = "Go back.",
-        TargetRoomId = "celar"
+        new Choice
+        {
+            Text = "Go back.",
+            TargetRoomId = "cellar"
+        },
+        new Choice
+        {
+            Text = "Go to the exit door.",
+            TargetRoomId = "exitdoor"
+        }
     });
     var boilerRoom = new Room()
     {
@@ -66,20 +109,49 @@ static Level BuildLevel()
         Name = "Boiler Room",
         Description = "It's hot in here."
     };
-    boilerRoom.Choices.Add(new Choice
+    boilerRoom.Choices.AddRange(new List<Choice>
     {
-        Text = "Go back.",
-        TargetRoomId = "celar"
+        new Choice
+        {
+            Text = "Go back.",
+            TargetRoomId = "cellar"
+        },
+        new Choice
+        {
+            Text = "Grab the key.",
+            GivesItemId = "key",
+            GivesItemName = "A rusty key"
+        }
+    });
+    var exitDoor = new Room()
+    {
+        Id = "exitdoor",
+        Name = "Exit Door",
+        Description = "A locked door. You need a key to open it.",
+        IsExit = true
+    };
+    exitDoor.Choices.AddRange(new List<Choice>
+    {
+        new Choice
+        {
+            Text = "Use the key to open the door.",
+            TargetRoomId = "exitdoor",
+            RequiredItemId = "key",
+            LockedMessage = "You need a key to open this door."
+        }
     });
     var level = new Level
     {
         Number = 1,
         Title = "Locked cellar",
         Description = "Try getting out from the dark cellar.",
-        StartRoomId = "celar"
+        StartRoomId = "cellar"
     };
-    level.Rooms.Add(celar);
-    level.Rooms.Add(corridor);
-    level.Rooms.Add(boilerRoom);
+    level.Rooms.AddRange(new List<Room>{
+        cellar,
+        corridor,
+        boilerRoom,
+        exitDoor
+    });
     return level;
 }
