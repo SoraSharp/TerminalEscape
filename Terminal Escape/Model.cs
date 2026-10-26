@@ -2,7 +2,6 @@
 {
     public string Text { get; set; } = "";
     public string? TargetRoomId { get; set; }
-    public Action? Action { get; set; }
 }
 
 public class Room
@@ -18,5 +17,6 @@ public class Level
     public int Number { get; set; }
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
-    public List<Room> Rooms = new();
+    public string StartRoomId { get; set; } = "";
+    public List<Room> Rooms { get; set; } = new();
 }
