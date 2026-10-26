@@ -80,7 +80,7 @@ static Level BuildLevel()
         {
             Text = "Take flashlight",
             GivesItemId = "flashlight",
-            GivesItemName = "A flashlight"
+            GivesItemName = "a flashlight"
         }
         
     });
@@ -88,7 +88,7 @@ static Level BuildLevel()
     {
         Id = "corridor",
         Name = "Corridor",
-        Description = "It's to dark to see anything."
+        Description = "Despite its best effort the flashlight didn't light up the place very well. \nYou can bearly see the light bouncing off of something metalic."
     };
     corridor.Choices.AddRange(new List<Choice>
     {
@@ -99,7 +99,7 @@ static Level BuildLevel()
         },
         new Choice
         {
-            Text = "Go to the exit door.",
+            Text = "Go to the reflection.",
             TargetRoomId = "exitdoor"
         }
     });
@@ -120,7 +120,7 @@ static Level BuildLevel()
         {
             Text = "Grab the key.",
             GivesItemId = "key",
-            GivesItemName = "A rusty key"
+            GivesItemName = "a rusty key"
         }
     });
     var exitDoor = new Room()
@@ -128,18 +128,30 @@ static Level BuildLevel()
         Id = "exitdoor",
         Name = "Exit Door",
         Description = "A locked door. You need a key to open it.",
-        IsExit = true
     };
     exitDoor.Choices.AddRange(new List<Choice>
     {
         new Choice
         {
+            Text = "Go back",
+            TargetRoomId = "corridor"
+        },
+        new Choice
+        {
             Text = "Use the key to open the door.",
-            TargetRoomId = "exitdoor",
+            TargetRoomId = "exit",
             RequiredItemId = "key",
             LockedMessage = "You need a key to open this door."
         }
+
     });
+    var exit = new Room()
+    {
+        Id = "exit",
+        Name = "",
+        Description = "",
+        IsExit = true
+    };
     var level = new Level
     {
         Number = 1,
@@ -151,7 +163,8 @@ static Level BuildLevel()
         cellar,
         corridor,
         boilerRoom,
-        exitDoor
+        exitDoor,
+        exit
     });
     return level;
 }
