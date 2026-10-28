@@ -8,4 +8,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="LevelLoader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Services\LevelLoader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\Levels\level1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

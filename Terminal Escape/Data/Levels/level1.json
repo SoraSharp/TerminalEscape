@@ -1,0 +1,82 @@
+﻿{
+  "Number": 1,
+  "Title": "The Locked Cellar",
+  "StartRoomId": "celar",
+  "Rooms": [
+    {
+      "Id": "celar",
+      "Name": "Cellar",
+      "Description": "A dark cellar. Two paths: \n- one leads to an even darker corridor, \n- one leads to a boiler room.",
+      "Choices": [
+        {
+          "Text": "Go down the corridor",
+          "TargetRoomId": "corridor",
+          "RequiredItemId": "flashlight",
+          "LockedMessage": "It's too dark to see anything without a light source."
+        },
+        {
+          "Text": "Go to the boiler room",
+          "TargetRoomId": "boilerroom"
+        },
+        {
+          "Text": "Take flashlight",
+          "GivesItemId": "flashlight",
+          "GivesItemName": "a flashlight"
+        }
+      ]
+    },
+    {
+      "Id": "boilerroom",
+      "Name": "Boiler Room",
+      "Description": "It's hot in here.",
+      "Choices": [
+        {
+          "Text": "Go back.",
+          "TargetRoomId": "celar"
+        },
+        {
+          "Text": "Grab the key.",
+          "GivesItemId": "key",
+          "GivesItemName": "a rusty key"
+        }
+      ]
+    },
+    {
+      "Id": "corridor",
+      "Name": "Corridor",
+      "Description": "Despite its best effort the flashlight didn't light up the place very well. \nYou can barely see the light bouncing off of something metallic.",
+      "Choices": [
+        {
+          "Text": "Go back.",
+          "TargetRoomId": "celar"
+        },
+        {
+          "Text": "Go to the reflection.",
+          "TargetRoomId": "exitdoor"
+        }
+      ]
+    },
+    {
+      "Id": "exitdoor",
+      "Name": "Exit Door",
+      "Description": "A locked door. You need a key to open it.",
+      "Choices": [
+        {
+          "Text": "Go back",
+          "TargetRoomId": "corridor"
+        },
+        {
+          "Text": "Use the key to open the door.",
+          "TargetRoomId": "exit",
+          "RequiredItemId": "key",
+          "LockedMessage": "You need a key to open this door."
+        }
+      ]
+    },
+    {
+      "Id": "exit",
+      "Name": "End",
+      "IsExit":  true 
+    }
+  ]
+}
