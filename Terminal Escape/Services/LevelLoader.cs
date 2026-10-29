@@ -9,7 +9,6 @@ public static class LevelLoader
 
 		foreach (string file in Directory.GetFiles(folder, "*.json"))
 		{
-
 			string json = File.ReadAllText(file);
 			Level? level = JsonSerializer.Deserialize<Level>(json);
 
