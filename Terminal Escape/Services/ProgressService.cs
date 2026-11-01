@@ -2,7 +2,7 @@
 
 namespace Terminal_Escape.Services
 {
-    internal class ProgressService
+    public static class ProgressService
     {
         public static bool IsUnlocked(GameData data, int levelNumber) => levelNumber <= data.UnlockedLevels;
         public static bool IsCompleted(GameData data, int levelNumber) => data.CompletedLevels.Contains(levelNumber);

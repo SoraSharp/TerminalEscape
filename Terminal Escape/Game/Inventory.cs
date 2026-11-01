@@ -1,6 +1,6 @@
 ﻿namespace Terminal_Escape.Game
 {
-    internal class Inventory
+    public class Inventory
     {
         private readonly List<string> _items = new();
         public IReadOnlyList<string> Items => _items;

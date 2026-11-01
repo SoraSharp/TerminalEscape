@@ -1,23 +1,26 @@
 ﻿using System.Text.Json;
-
-public static class LevelLoader
+using Terminal_Escape.Models;
+namespace Terminal_Escape.Services
 {
-	public static List<Level> Load()
+	public static class LevelLoader
 	{
-		string folder = Path.Combine(AppContext.BaseDirectory, "Data", "Levels");
-		var levels = new List<Level>();
-
-		foreach (string file in Directory.GetFiles(folder, "*.json"))
+		public static List<Level> Load()
 		{
-			string json = File.ReadAllText(file);
-			Level? level = JsonSerializer.Deserialize<Level>(json);
+			string folder = Path.Combine(AppContext.BaseDirectory, "Data", "Levels");
+			var levels = new List<Level>();
 
-			if (level != null)
+			foreach (string file in Directory.GetFiles(folder, "*.json"))
 			{
-				levels.Add(level);
-			}
-		}
+				string json = File.ReadAllText(file);
+				Level? level = JsonSerializer.Deserialize<Level>(json);
 
-		return levels.OrderBy(l => l.Number).ToList();
+				if (level != null)
+				{
+					levels.Add(level);
+				}
+			}
+
+			return levels.OrderBy(l => l.Number).ToList();
+		}
 	}
 }

@@ -1,4 +1,26 @@
-﻿Level level = LevelLoader.Load()[0];
+﻿using Terminal_Escape.Game;
+using Terminal_Escape.Models;
+using Terminal_Escape.Services;
+
+var level = new Level { Number = 1, Title = "Test Level" };
+var room = new Room { Name = "Cellar", Description = "A dark cellar." };
+var choices = new List<Choice>
+{
+    new Choice { Text = "Look around" },
+    new Choice { Text = "Go to the corridor" }
+};
+
+RoomView.Draw(level, room, choices);
+Console.ReadKey();
+
+var inventory = new Inventory();
+RoomView.ShowInventory(inventory);
+
+inventory.Add("flashlight");
+inventory.Add("key");
+RoomView.ShowInventory(inventory);
+
+/*Level level = LevelLoader.Load()[0];
 
 string currentRoomId = level.StartRoomId;
 var inventory = new List<string>();
@@ -53,4 +75,4 @@ while (true)
             }
         }
     }
-}
+}*/

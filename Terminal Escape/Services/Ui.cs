@@ -1,8 +1,8 @@
 ﻿namespace Terminal_Escape.Services
 {
-    internal class Ui
+    public static class Ui
     {
-        public static void Text(string text)
+        public static void Title(string text)
         {
             Console.WriteLine(text);
         }
@@ -10,9 +10,17 @@
         {
             Console.WriteLine(text);
         }
-        public static void Pause()
+        public static void Line(string? text)
         {
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine(text);
+        }
+        public static void Clear()
+        {
+            Console.Clear();
+        }
+        public static void Pause(string? text)
+        {
+            Console.WriteLine(text);
             Console.ReadLine();
         }
         public static string Ask(string prompt)

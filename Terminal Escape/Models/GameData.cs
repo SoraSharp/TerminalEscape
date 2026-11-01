@@ -1,6 +1,6 @@
 ﻿namespace Terminal_Escape.Models
 {
-    internal class GameData
+    public class GameData
     {
         public int Version { get; set; } = 1;
         public string PlayerName { get; set; }
