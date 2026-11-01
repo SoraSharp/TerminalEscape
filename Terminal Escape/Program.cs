@@ -1,24 +1,24 @@
 ﻿using Terminal_Escape.Game;
 using Terminal_Escape.Models;
-using Terminal_Escape.Services;
 
-var level = new Level { Number = 1, Title = "Test Level" };
-var room = new Room { Name = "Cellar", Description = "A dark cellar." };
-var choices = new List<Choice>
+var cellar = new Room { Id = "cellar", Name = "Cellar", Description = "A dark cellar." };
+cellar.Choices.Add(new Choice { Text = "Take the flashlight", GivesItemId = "flashlight" });
+cellar.Choices.Add(new Choice
 {
-    new Choice { Text = "Look around" },
-    new Choice { Text = "Go to the corridor" }
-};
+    Text = "Go to the exit",
+    TargetRoomId = "exit",
+    RequiredItemId = "flashlight",
+    LockedMessage = "Too dark."
+});
 
-RoomView.Draw(level, room, choices);
-Console.ReadKey();
+var exit = new Room { Id = "exit", Name = "Exit", Description = "Daylight!", IsExit = true };
 
-var inventory = new Inventory();
-RoomView.ShowInventory(inventory);
+var level = new Level { Number = 1, Title = "Test", StartRoomId = "cellar" };
+level.Rooms.Add(cellar);
+level.Rooms.Add(exit);
 
-inventory.Add("flashlight");
-inventory.Add("key");
-RoomView.ShowInventory(inventory);
+bool completed = LevelPlayer.Play(level);
+Console.WriteLine($"Completed: {completed}");
 
 /*Level level = LevelLoader.Load()[0];
 
