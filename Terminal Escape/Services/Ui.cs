@@ -10,7 +10,7 @@
         {
             Console.WriteLine(text);
         }
-        public static void Pouse()
+        public static void Pause()
         {
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
