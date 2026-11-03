@@ -1,24 +1,20 @@
-﻿using Terminal_Escape.Game;
-using Terminal_Escape.Models;
+﻿using Terminal_Escape.Models;
+using Terminal_Escape.Services;
 
-var cellar = new Room { Id = "cellar", Name = "Cellar", Description = "A dark cellar." };
-cellar.Choices.Add(new Choice { Text = "Take the flashlight", GivesItemId = "flashlight" });
-cellar.Choices.Add(new Choice
-{
-    Text = "Go to the exit",
-    TargetRoomId = "exit",
-    RequiredItemId = "flashlight",
-    LockedMessage = "Too dark."
-});
+var data = new GameData();
 
-var exit = new Room { Id = "exit", Name = "Exit", Description = "Daylight!", IsExit = true };
+Console.WriteLine(ProgressService.GetStatus(data, 1));   // expected: [unlocked]
+Console.WriteLine(ProgressService.GetStatus(data, 2));   // expected: [locked]
 
-var level = new Level { Number = 1, Title = "Test", StartRoomId = "cellar" };
-level.Rooms.Add(cellar);
-level.Rooms.Add(exit);
+ProgressService.CompleteLevel(data, 1);
+Console.WriteLine(ProgressService.GetStatus(data, 1));   // expected: [completed]
+Console.WriteLine(ProgressService.GetStatus(data, 2));   // expected: [unlocked]
+Console.WriteLine(ProgressService.GetStatus(data, 3));   // expected: [locked]
 
-bool completed = LevelPlayer.Play(level);
-Console.WriteLine($"Completed: {completed}");
+ProgressService.CompleteLevel(data, 3);                  // skip ahead
+ProgressService.CompleteLevel(data, 1);                  // replay level 1
+Console.WriteLine(data.UnlockedLevels);                  // expected: 4 (must NOT drop to 2)
+Console.WriteLine(data.CompletedLevels.Count);           // expected: 2 (no duplicate of 1)
 
 /*Level level = LevelLoader.Load()[0];
 
