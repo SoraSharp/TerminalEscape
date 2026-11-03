@@ -4,7 +4,7 @@
     {
         public int Version { get; set; } = 1;
         public string PlayerName { get; set; }
-        public int UnlockedLevels { get; set; }
+        public int UnlockedLevels { get; set; } = 1;
         public List<int> CompletedLevels { get; set; } = new();
     }
 }
