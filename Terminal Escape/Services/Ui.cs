@@ -10,7 +10,7 @@
         {
             Console.WriteLine(text);
         }
-        public static void Line(string? text)
+        public static void Line(string? text = "")
         {
             Console.WriteLine(text);
         }

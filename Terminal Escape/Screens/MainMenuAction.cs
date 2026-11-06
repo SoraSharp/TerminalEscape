@@ -1,6 +1,4 @@
-﻿
-
-namespace Terminal_Escape.Screens
+﻿namespace Terminal_Escape.Screens
 {
     public enum MainMenuAction
     {
